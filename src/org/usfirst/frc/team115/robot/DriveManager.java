@@ -34,7 +34,7 @@ public class DriveManager {
 	}
 	
 	public void update(Joystick joystick){
-		if(joystick.getRawButton(1)) {
+		if(joystick.getRawButton(RobotMap.TURN_BUTTON)) {
 			turnController.setSetpoint(addAngles(latest_yaw_angle, 90));
 			
 			/*VisionPose p = visionDataManager.latestPose;

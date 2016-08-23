@@ -9,4 +9,6 @@ public class RobotMap {
 	
 	public static final int JOYSTICK_DRIVE = 0;
 	
+	public static final int TURN_BUTTON = 1;
+	
 }
