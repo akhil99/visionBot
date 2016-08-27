@@ -44,6 +44,7 @@ public class Robot extends IterativeRobot {
 
 	public void teleopInit() {
 		driveLooper.start();
+		driveManager.logDrive();
 	}
 
 	/**
@@ -54,6 +55,7 @@ public class Robot extends IterativeRobot {
 	}
 
 	public void disabledInit() {
+		canDriveTrain.drive(0, 0);
 		driveLooper.stop();
 	}
 
