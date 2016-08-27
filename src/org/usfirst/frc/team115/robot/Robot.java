@@ -23,7 +23,8 @@ public class Robot extends IterativeRobot {
 		visionDataManager = new VisionDataManager();
 		visionDataManager.init();
 		
-		canDriveTrain = new CANDriveTrain(RobotMap.TALON_BL, RobotMap.TALON_BR, RobotMap.TALON_FL, RobotMap.TALON_FR);
+		//canDriveTrain = new CANDriveTrain(RobotMap.TALON_BL, RobotMap.TALON_BR, RobotMap.TALON_FL, RobotMap.TALON_FR);
+		canDriveTrain = new CANDriveTrain(RobotMap.VICTOR_BL, RobotMap.VICTOR_BR, RobotMap.VICTORBOT_TALON, RobotMap.VICTOR_FR);
 		driveLooper = new Looper("Drive", canDriveTrain, 1 / 200.0);
 		driveManager = new DriveManager(canDriveTrain, visionDataManager);
 

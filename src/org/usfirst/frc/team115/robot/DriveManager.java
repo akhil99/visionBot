@@ -7,15 +7,19 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class DriveManager {
 	
-	public static final double TURN_P = 0.04;
-	public static final double TURN_I = 0.01;
+	public static final double TURN_P = 0.08;
+	public static final double TURN_I = 0.00;
 	public static final double TURN_D = 0.1;
-	public static final double TURN_OUTPUT_MAX = 0.75;
+	public static final double TURN_OUTPUT_MAX = 0.65;
 	public static final double TURN_ABSOLUTE_TOLERANCE = 2.0;
 	public static final int TURN_TOLERANCE_BUFFER = 5000000;
+	
+	private double[] time = new double[400];
+	private double[] angle = new double[400];
 	
 	double latest_yaw_angle = 0; //represents the latest yaw angle reported *before* the PID controller started
 	
@@ -39,13 +43,15 @@ public class DriveManager {
 	public void update(Joystick joystick){
 		
 		if(joystick.getRawButton(RobotMap.TURN_BUTTON)) {
-			turnController.setSetpoint(addAngles(latest_yaw_angle, 45));
+			turnController.setSetpoint(addAngles(latest_yaw_angle, 90));
 			turnController.enable();
 			if (turnController.getError() < 5.0) {
+				SmartDashboard.putBoolean("Using I", true);
 				turnController.setPID(TURN_P, TURN_I, TURN_D);
 			}else {
 				turnController.setPID(TURN_P, 0, TURN_D);
 			}
+			SmartDashboard.putNumber("Yaw", turnController.getError());
 			/*VisionPose p = visionDataManager.latestPose;
 			long timeStamp = p.timestamp;
 			//todo: lookup angle pose at timestamp
