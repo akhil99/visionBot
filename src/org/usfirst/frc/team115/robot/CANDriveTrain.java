@@ -7,6 +7,7 @@ import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.SPI;
+import edu.wpi.first.wpilibj.VictorSP;
 
 public class CANDriveTrain extends Loopable{
 	
@@ -20,7 +21,8 @@ public class CANDriveTrain extends Loopable{
 	AHRS navX;
 	
 	public CANDriveTrain(int backLeft, int backRight, int frontLeft, int frontRight){
-		robotDrive = new RobotDrive(new CANTalon(frontLeft), new CANTalon(backLeft), new CANTalon(frontRight), new CANTalon(frontLeft));
+		//robotDrive = new RobotDrive(new CANTalon(frontLeft), new CANTalon(backLeft), new CANTalon(frontRight), new CANTalon(backRight));
+		robotDrive = new RobotDrive(new CANTalon(frontLeft), new VictorSP(backLeft), new VictorSP(frontRight), new VictorSP(backRight));		
 		
 		navX = new AHRS(SPI.Port.kMXP);
 	}
