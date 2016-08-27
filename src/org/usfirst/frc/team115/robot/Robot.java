@@ -7,8 +7,6 @@ import org.usfirst.frc.team115.util.VisionDataManager;
 import edu.wpi.first.wpilibj.IterativeRobot;
 
 public class Robot extends IterativeRobot {
-	final String defaultAuto = "Default";
-	final String customAuto = "My Auto";
 
 	CANDriveTrain canDriveTrain;
 	Looper driveLooper;
@@ -23,12 +21,11 @@ public class Robot extends IterativeRobot {
 	 */
 	public void robotInit() {
 		visionDataManager = new VisionDataManager();
-
+		visionDataManager.init();
+		
 		canDriveTrain = new CANDriveTrain(RobotMap.TALON_BL, RobotMap.TALON_BR, RobotMap.TALON_FL, RobotMap.TALON_FR);
 		driveLooper = new Looper("Drive", canDriveTrain, 1 / 200.0);
 		driveManager = new DriveManager(canDriveTrain, visionDataManager);
-
-		// visionDataManager.init();
 
 		oi = new OperatorInterface();
 	}
