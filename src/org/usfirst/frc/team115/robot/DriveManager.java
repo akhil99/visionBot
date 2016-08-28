@@ -43,7 +43,10 @@ public class DriveManager {
 	public void update(Joystick joystick){
 		
 		if(joystick.getRawButton(RobotMap.TURN_BUTTON)) {
-			turnController.setSetpoint(addAngles(latest_yaw_angle, 90));
+			if(!turnController.isEnabled()){
+				turnController.setSetpoint(addAngles(latest_yaw_angle, Math.toDegrees(visionDataManager.latestPose.horizAngle)));
+				SmartDashboard.putNumber("Setpoint", Math.toDegrees(visionDataManager.latestPose.horizAngle));
+			}
 			turnController.enable();
 			if (turnController.getError() < 5.0) {
 				SmartDashboard.putBoolean("Using I", true);

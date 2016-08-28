@@ -9,7 +9,7 @@ import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.VictorSP;
 
-public class CANDriveTrain extends Loopable{
+public class CANDriveTrain extends Loopable {
 	
 	static final boolean INVERT_MOVE = true;
 	static final boolean INVERT_TURN = true;
