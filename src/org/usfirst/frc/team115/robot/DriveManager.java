@@ -23,13 +23,13 @@ public class DriveManager {
 	
 	double latest_yaw_angle = 0; //represents the latest yaw angle reported *before* the PID controller started
 	
-	CANDriveTrain driveTrain;
 	VisionDataManager visionDataManager;
+	DriveTrain driveTrain;
 	
 	PIDController turnController;
 	PIDOutput turnPIDOutput;
 	
-	public DriveManager(CANDriveTrain driveTrain, VisionDataManager visionManager){
+	public DriveManager(DriveTrain driveTrain, VisionDataManager visionManager){
 		this.driveTrain = driveTrain;
 		this.visionDataManager = visionManager;
 		

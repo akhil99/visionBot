@@ -9,7 +9,7 @@ import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.VictorSP;
 
-public class CANDriveTrain extends Loopable {
+public class DriveTrain extends Loopable {
 	
 	static final boolean INVERT_MOVE = true;
 	static final boolean INVERT_TURN = true;
@@ -20,8 +20,7 @@ public class CANDriveTrain extends Loopable {
 	RobotDrive robotDrive;
 	AHRS navX;
 	
-	public CANDriveTrain(int backLeft, int backRight, int frontLeft, int frontRight){
-		//robotDrive = new RobotDrive(new CANTalon(frontLeft), new CANTalon(backLeft), new CANTalon(frontRight), new CANTalon(backRight));
+	public DriveTrain(int backLeft, int backRight, int frontLeft, int frontRight){
 		robotDrive = new RobotDrive(new CANTalon(frontLeft), new VictorSP(backLeft), new VictorSP(frontRight), new VictorSP(backRight));		
 		
 		navX = new AHRS(SPI.Port.kMXP);

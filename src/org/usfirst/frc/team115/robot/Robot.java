@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj.IterativeRobot;
 
 public class Robot extends IterativeRobot {
 
-	CANDriveTrain canDriveTrain;
+	DriveTrain driveTrain;
 	Looper driveLooper;
 	DriveManager driveManager;
 	OperatorInterface oi;
@@ -23,10 +23,9 @@ public class Robot extends IterativeRobot {
 		visionDataManager = new VisionDataManager();
 		visionDataManager.init();
 		
-		//canDriveTrain = new CANDriveTrain(RobotMap.TALON_BL, RobotMap.TALON_BR, RobotMap.TALON_FL, RobotMap.TALON_FR);
-		canDriveTrain = new CANDriveTrain(RobotMap.VICTOR_BL, RobotMap.VICTOR_BR, RobotMap.VICTORBOT_TALON, RobotMap.VICTOR_FR);
-		driveLooper = new Looper("Drive", canDriveTrain, 1 / 200.0);
-		driveManager = new DriveManager(canDriveTrain, visionDataManager);
+		driveTrain = new DriveTrain(RobotMap.VICTOR_BL, RobotMap.VICTOR_BR, RobotMap.VICTORBOT_TALON, RobotMap.VICTOR_FR);
+		driveLooper = new Looper("Drive", driveTrain, 1 / 200.0);
+		driveManager = new DriveManager(driveTrain, visionDataManager);
 
 		oi = new OperatorInterface();
 	}
@@ -53,7 +52,7 @@ public class Robot extends IterativeRobot {
 	}
 
 	public void disabledInit() {
-		canDriveTrain.drive(0, 0);
+		driveTrain.drive(0, 0);
 		driveLooper.stop();
 	}
 
