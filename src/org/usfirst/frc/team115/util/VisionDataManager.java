@@ -3,9 +3,6 @@ package org.usfirst.frc.team115.util;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.ByteBuffer;
-import java.sql.Date;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.handshake.ServerHandshake;

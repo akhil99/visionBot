@@ -1,7 +1,8 @@
 package org.usfirst.frc.team115.robot;
 
 import org.usfirst.frc.team115.util.VisionDataManager;
-import org.usfirst.frc.team115.util.VisionPose;
+
+import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.PIDController;
@@ -18,20 +19,19 @@ public class DriveManager {
 	public static final double TURN_ABSOLUTE_TOLERANCE = 2.0;
 	public static final int TURN_TOLERANCE_BUFFER = 5000000;
 	
-	private double[] time = new double[400];
-	private double[] angle = new double[400];
-	
 	double latest_yaw_angle = 0; //represents the latest yaw angle reported *before* the PID controller started
 	
-	VisionDataManager visionDataManager;
 	DriveTrain driveTrain;
+	VisionDataManager vdm;
+	AHRS navX;
 	
 	PIDController turnController;
 	PIDOutput turnPIDOutput;
 	
 	public DriveManager(DriveTrain driveTrain, VisionDataManager visionManager){
 		this.driveTrain = driveTrain;
-		this.visionDataManager = visionManager;
+		this.vdm = visionManager;
+		this.navX = driveTrain.getNavX();
 		
 		initTurnController();
 	}
@@ -43,28 +43,19 @@ public class DriveManager {
 	public void update(Joystick joystick){
 		
 		if(joystick.getRawButton(RobotMap.TURN_BUTTON)) {
-			if(!turnController.isEnabled()){
-				turnController.setSetpoint(addAngles(latest_yaw_angle, Math.toDegrees(visionDataManager.latestPose.horizAngle)));
-				SmartDashboard.putNumber("Setpoint", Math.toDegrees(visionDataManager.latestPose.horizAngle));
+			synchronized (vdm.latestPose) {
+				if(vdm.latestPose.timestamp < 0)return; //we don't have vision info yet
+				double yaw = navX.getYawAtTime(vdm.latestPose.timestamp);
+				turnController.setSetpoint(addAngles(yaw, Math.toDegrees(vdm.latestPose.horizAngle)));
 			}
-			turnController.enable();
-			if (turnController.getError() < 5.0) {
-				SmartDashboard.putBoolean("Using I", true);
-				turnController.setPID(TURN_P, TURN_I, TURN_D);
-			}else {
-				turnController.setPID(TURN_P, 0, TURN_D);
-			}
-			SmartDashboard.putNumber("Yaw", turnController.getError());
-			/*VisionPose p = visionDataManager.latestPose;
-			long timeStamp = p.timestamp;
-			//todo: lookup angle pose at timestamp
-			turnController.setSetpoint(addAngles(a, b));
-			turnController.enable(); */
+			
+			if(!turnController.isEnabled()) turnController.enable();
+			
+			SmartDashboard.putNumber("Setpoint", turnController.getSetpoint());
+			SmartDashboard.putNumber("Error", turnController.getError());
 		}
 		else {
-			latest_yaw_angle = driveTrain.getNavX().getYaw();
-			turnController.disable();
-			
+			if(turnController.isEnabled()) turnController.disable();
 			driveTrain.drive(joystick.getY(), joystick.getX());
 		}
 	}
