@@ -20,6 +20,7 @@
 	</classpathentry>
 	<classpathentry kind="lib" path="lib/RIOdroid.jar"/>
 	<classpathentry kind="lib" path="lib/java_websocket.jar"/>
-	<classpathentry kind="lib" path="lib/navx_frc.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/navx_frc"/>
+	<classpathentry kind="lib" path="C:/Users/admin/navx-mxp/java/lib/navx_frc.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
