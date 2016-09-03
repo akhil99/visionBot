@@ -2,26 +2,26 @@ package org.usfirst.frc.team115.util;
 
 public class TimestampedInfo {
 	
-	private int timestamp;
-	private double angle;
+	public long timestamp;
+	public double angle;
 	
 	public TimestampedInfo() {}
 	
-	public TimestampedInfo(int time, int yaw) {
+	public TimestampedInfo(long time, double yaw) {
 		timestamp = time;
 		angle = yaw;
 	}
 	
-	public void set (int time, double yaw) {
+	public void set (long time, double yaw) {
 		timestamp = time;
 		angle = yaw;
 	}
 	
-	public void setTimestamp(int time) {
+	public void setTimestamp(long time) {
 		timestamp = time;
 	}
 	
-	public int getTimestamp() {
+	public long getTimestamp() {
 		return timestamp;
 	}
 	

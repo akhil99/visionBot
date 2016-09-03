@@ -2,6 +2,7 @@
 package org.usfirst.frc.team115.robot;
 
 import org.usfirst.frc.team115.util.Looper;
+import org.usfirst.frc.team115.util.TimestampedInfoUpdater;
 import org.usfirst.frc.team115.util.VisionDataManager;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
@@ -12,6 +13,7 @@ public class Robot extends IterativeRobot {
 	Looper driveLooper;
 	DriveManager driveManager;
 	OperatorInterface oi;
+	TimestampedInfoUpdater timestampedInfoUpdater;
 
 	VisionDataManager visionDataManager;
 
@@ -24,6 +26,9 @@ public class Robot extends IterativeRobot {
 		visionDataManager.init();
 		
 		driveTrain = new DriveTrain(RobotMap.VICTOR_BL, RobotMap.VICTOR_BR, RobotMap.VICTORBOT_TALON, RobotMap.VICTOR_FR);
+		
+		timestampedInfoUpdater = new TimestampedInfoUpdater(driveTrain.getNavX());
+		
 		driveLooper = new Looper("Drive", driveTrain, 1 / 200.0);
 		driveManager = new DriveManager(driveTrain, visionDataManager);
 

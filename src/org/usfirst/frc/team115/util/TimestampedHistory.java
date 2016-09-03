@@ -17,7 +17,7 @@ public class TimestampedHistory {
 		validSamp = 0;
 	}
 	
-	public void add (int timestamp, double angle) {
+	public void add (long timestamp, double angle) {
 		history[currentIndex].set(timestamp, angle);
 		if ( currentIndex < (historySize - 1)) {
 			currentIndex++;
@@ -29,25 +29,46 @@ public class TimestampedHistory {
 		}
 	}
 	
-	public TimestampedInfo getTimestampedAngle(int requestedTimestamp) {
-		TimestampedInfo match = null;
-		int timestamp = 0;
-		int closeTimestamp = history[0].getTimestamp();
-		int closeIndex = 0;
-		for ( int i = 0; i < validSamp; i++ ) { // for samples
-    		timestamp = history[i].getTimestamp();
-    		if ( timestamp == requestedTimestamp ) {
-    			match = history[i];
-    			break;
-    		} else {
-    			if (Math.abs(timestamp - requestedTimestamp) < Math.abs(closeTimestamp - requestedTimestamp)) {
-    				closeTimestamp = timestamp;
-    				closeIndex = i;
-    			}
-    		}
+	public TimestampedInfo getTimestampedAngle(long requestedTimestamp) {
+    	TimestampedInfo match = null;
+		
+		int initial_index = currentIndex;
+    	long lowest_timestamp = Long.MAX_VALUE;
+    	int lowest_timestamp_index = -1;
+    	long highest_timestamp = Long.MIN_VALUE;
+    	int highest_timestamp_index = -1;
+		
+		synchronized(this) {
+			for ( int i = 0; i < validSamp; i++ ) {
+	    		long entry_timestamp = history[initial_index].timestamp;
+	    		if ( entry_timestamp < lowest_timestamp ) {
+	    			lowest_timestamp = entry_timestamp;
+	    			lowest_timestamp_index = i;
+	    		}
+	    		if ( entry_timestamp > highest_timestamp ) {
+	    			highest_timestamp = entry_timestamp;
+	    			highest_timestamp_index = i;
+	    		}
+	    		if ( entry_timestamp == requestedTimestamp) {
+	    			match = history[initial_index];
+	    			break;
+	    		}
+	    		initial_index--;
+	    		if ( initial_index < 0 ) {
+	    			initial_index = historySize - 1;
+	    		}
+	    	}
     	}
+		
 		if (match == null) {
-			match = history[closeIndex];
+			double highest_angle = history[highest_timestamp_index].angle;
+			double lowest_angle = history[lowest_timestamp_index].angle;
+			
+			if(requestedTimestamp - lowest_timestamp < highest_timestamp - requestedTimestamp) {
+				match = new TimestampedInfo(requestedTimestamp, lowest_angle); 
+			}else{
+				match = new TimestampedInfo(requestedTimestamp, highest_angle);
+			}
 		}
 		return match;
 	}
@@ -58,9 +79,9 @@ public class TimestampedHistory {
 		return angle;
 	}
 	
-	public double getTimestampedYaw(int timestamp) {
-		TimestampedInfo ta = getTimestampedAngle(timestamp);
-		return ta.getAngle();
+	public double getTimestampedYaw(long l) {
+		TimestampedInfo ta = getTimestampedAngle(l);
+		return ta.angle;
 	}
 
 }

@@ -45,7 +45,7 @@ public class DriveManager {
 		if(joystick.getRawButton(RobotMap.TURN_BUTTON)) {
 			synchronized (vdm.latestPose) {
 				if(vdm.latestPose.timestamp < 0)return; //we don't have vision info yet
-				double yaw = navX.getYawAtTime(vdm.latestPose.timestamp);
+				double yaw = 0;
 				turnController.setSetpoint(addAngles(yaw, Math.toDegrees(vdm.latestPose.horizAngle)));
 			}
 			
